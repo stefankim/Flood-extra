@@ -1,0 +1,7 @@
+name = flood_extra
+description = flood_extra module to unflood users
+core=7.x
+version=VERSION
+dependencies[] = views
+files[] = flood_extra.module
+files[] = views/flood_extra.views.inc
