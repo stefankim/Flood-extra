@@ -1,0 +1,65 @@
+<?php
+  
+
+  // link to custom view
+  
+  function flood_extra_views_api() {
+      return array(
+          'api' => '3.0-alpha1',
+          'path' => drupal_get_path('module','flood_extra'). '/views',
+      );
+  }
+  
+  
+/**
+ * User type VBO action
+ */
+function flood_extra_action_info() {
+  return array(
+    'flood_extra_unflood_action' => array(
+  'label' => t('Unflood selected user'),
+      'type' => 'user',
+      'description' => t('Unflood the user'),
+      'configurable' => FALSE,
+      'hooks' => array(
+        'any' => TRUE,
+      ),
+      // if TRUE operate on an array of identifiers
+      // if FALSE separately as an object
+      'aggregate' => FALSE,
+    ),
+  );
+}
+
+
+
+/**
+ * Implementation of a UnFlood action in user type
+ * 
+ */
+function flood_extra_unflood_action(&$entity, $context = array()) {
+	
+  if (isset($entity->uid)) {
+    $uid = $entity->uid;
+  }
+  elseif (isset($context['uid'])) {
+    $uid = $context['uid'];
+  }
+ db_delete('flood')
+    ->condition('identifier', $uid)  
+    ->execute();
+}
+
+
+
+//function added to flood control seeting to show only uid in table db
+function flood_extra_form_flood_control_settings_form_alter(&$form, &$form_state, $form_id) {
+
+$form['login']['user_failed_login_identifier_uid_only'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Failed login (username only)'),
+    '#description' => t('When enabled, register failed login events based on the uid only, so they apply for any IP address. This is the most secure option.'),
+    '#default_value' => variable_get('user_failed_login_identifier_uid_only'),
+  );
+}
+
