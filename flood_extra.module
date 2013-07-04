@@ -53,6 +53,7 @@ function flood_extra_unflood_action(&$entity, $context = array()) {
 
 
 //function added to flood control seeting to show only uid in table db
+
 function flood_extra_form_flood_control_settings_form_alter(&$form, &$form_state, $form_id) {
 
 $form['login']['user_failed_login_identifier_uid_only'] = array(
